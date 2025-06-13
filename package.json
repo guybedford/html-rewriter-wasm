@@ -1,6 +1,6 @@
 {
     "name": "htmlrewriter",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "Use Cloudflare HTMLRewriter in Node.js, Browser, Next.js and more",
     "type": "module",
     "files": [
@@ -32,7 +32,7 @@
     },
     "scripts": {
         "try": "bun scripts/try.js && node scripts/try.js && deno run --allow-read scripts/try.js && pnpm vite dev scripts",
-        "prepublishOnly": "pnpm build",
+        "prepublishOnly": "# pnpm build",
         "test": "pnpm vitest",
         "build": "tsx scripts/build.ts"
     },
