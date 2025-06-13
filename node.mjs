@@ -1,6 +1,6 @@
 import init from './dist/html_rewriter.js'
-import fs from 'fs'
-import url from 'url'
+import fs from 'node:fs'
+import url from 'node:url'
 
 import { HTMLRewriterWrapper } from './dist/html_rewriter_wrapper.js'
 
