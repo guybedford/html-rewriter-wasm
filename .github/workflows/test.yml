@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Install first to not follow rust-toolchain.toml override
+      - name: Install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli@0.2.74
       - uses: actions/checkout@v2
       - uses: Swatinem/rust-cache@v1
         with:
@@ -24,8 +27,6 @@ jobs:
           wget https://github.com/WebAssembly/binaryen/releases/download/version_118/binaryen-version_118-x86_64-linux.tar.gz
           tar -xzf binaryen-version_118-x86_64-linux.tar.gz
           sudo cp binaryen-version_118/bin/wasm-opt /usr/local/bin/
-      - name: Install wasm-bindgen-cli
-        run: cargo install wasm-bindgen-cli@0.2.74
       - run: npm ci
       - run: npm run build
       - run: npm test
