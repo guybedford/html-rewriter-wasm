@@ -32,7 +32,7 @@ test("handles streaming", async (t) => {
 
   const outputChunks: string[] = [];
   const decoder = new TextDecoder();
-  const rewriter = new RawHTMLRewriter((chunk: ArrayBuffer) =>
+  const rewriter = new RawHTMLRewriter((chunk: Uint8Array) =>
     outputChunks.push(decoder.decode(chunk))
   ).on("p", {
     text(text: TextChunk) {
@@ -92,7 +92,7 @@ test("rethrows error thrown in async handler", async (t) => {
   await t.throwsAsync(promise, { message: "Whoops!" });
 });
 
-test.serial("handles concurrent rewriters with async handlers", async (t) => {
+test("handles concurrent rewriters with async handlers", async (t) => {
   // Note this test requires the "safe" HTMLRewriter, see comments in
   // src/modules/rewriter.ts for more details
   const rewriter = (i: number) =>

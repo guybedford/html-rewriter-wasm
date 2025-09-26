@@ -33,7 +33,7 @@ export class HTMLRewriter {
 
   async transform(input: string): Promise<string> {
     let output = "";
-    const rewriter = new RawHTMLRewriter((chunk: ArrayBuffer) => {
+    const rewriter = new RawHTMLRewriter((chunk: Uint8Array) => {
       output += decoder.decode(chunk);
     }, this.options);
     for (const [selector, handlers] of this.elementHandlers) {
