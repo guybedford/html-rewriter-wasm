@@ -5,7 +5,7 @@ echo "---> Checking prerequisites..."
 WASM_BINDGEN_VERSION=$(wasm-bindgen --version)
 if [[ ! $WASM_BINDGEN_VERSION =~ "0.2.74" ]]; then
   echo "wasm-bindgen@0.2.74 not installed, please install via:"
-  echo "cargo install wasm-bindgen-cli@0.2.74"
+  echo "cargo +1.77.0 install wasm-bindgen-cli@0.2.74"
   exit 1
 fi
 
