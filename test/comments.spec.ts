@@ -1,5 +1,5 @@
 import test, { Macro } from "ava";
-import { Comment } from "..";
+import { Comment } from "../dist/html_rewriter";
 import { HTMLRewriter, mutationsMacro, wait } from ".";
 
 const commentsMutationsInput = "<p><!--test--></p>";

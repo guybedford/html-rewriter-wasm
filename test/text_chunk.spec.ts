@@ -1,5 +1,5 @@
 import test, { Macro } from "ava";
-import { TextChunk } from "..";
+import type { TextChunk } from "../dist/html_rewriter";
 import { HTMLRewriter, mutationsMacro, wait } from ".";
 
 const textMutationsInput = "<p>t</p>"; // Single character will be single chunk

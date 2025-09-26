@@ -1,18 +1,25 @@
 #!/usr/bin/env bash
 set -e
 
-echo "---> Checking wasm-pack version..."
-# We need to make sure the version of wasm-pack uses Binaryen version_92,
-# which exports asyncify_get_state
-WASM_PACK_VERSION=$(wasm-pack --version)
-if [[ ! $WASM_PACK_VERSION =~ -asyncify$ ]]; then
-  echo "$WASM_PACK_VERSION installed, please install mrbbot's fork:"
-  echo "cargo install --git https://github.com/mrbbot/wasm-pack"
+echo "---> Checking prerequisites..."
+WASM_BINDGEN_VERSION=$(wasm-bindgen --version)
+if [[ ! $WASM_BINDGEN_VERSION =~ wasm-bindgen ]]; then
+  echo "wasm-bindgen not installed, please install via:"
+  echo "cargo install wasm-bindgen-cli"
   exit 1
 fi
 
-echo "---> Building WebAssembly with wasm-pack..."
-wasm-pack build --target nodejs
+WASM_OPT_VERSION=$(wasm-opt --version)
+if [[ ! $WASM_OPT_VERSION =~ wasm-opt ]]; then
+  echo "wasm-opt not installed, please install from Binaryen:"
+  echo "https://github.com/WebAssembly/binaryen"
+  exit 1
+fi
+
+echo "---> Building WebAssembly with wasm-bindgen..."
+cargo build --target wasm32v1-unknown-unknown --release
+wasm-bindgen target/wasm32-unknown-unknown/release/html_rewriter.wasm --target nodejs --out-dir dist
+wasm-opt dist/html_rewriter_bg.wasm -o dist/html_rewriter_bg.wasm --asyncify -Os
 
 echo "---> Patching JavaScript glue code..."
 # Wraps write/end with asyncify magic and adds this returns for chaining
