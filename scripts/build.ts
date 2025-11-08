@@ -4,18 +4,16 @@ import fs from 'fs-extra'
 
 async function main() {
     await fs.rm(`dist`, { recursive: true, force: true })
-    await shell(`wasm-pack build --target web`)
-    // await shell(`wasm-pack build --target nodejs --out-dir node`)
-    await fs.mkdirSync(`dist`, { recursive: true })
-    await fs.copy(`pkg`, `dist`, {
-        filter(p) {
-            return (
-                !p.endsWith('package.json') &&
-                !p.endsWith('gitignore') &&
-                !p.endsWith('README.md')
-            )
-        },
-    })
+
+    await shell(`cargo +1.82.0 install wasm-bindgen-cli@0.2.74`)
+    await shell(`rustup target add wasm32-unknown-unknown`)
+    await shell(`cargo build --target wasm32-unknown-unknown --release`)
+    await shell(`wasm-bindgen target/wasm32-unknown-unknown/release/html_rewriter.wasm --target web --out-dir dist`)
+    await shell(`wasm-opt dist/html_rewriter_bg.wasm -o dist/html_rewriter_bg.wasm --asyncify -Os`)
+
+    await shell(`patch -uN dist/html_rewriter.js < html_rewriter.js.patch`)
+    await fs.rm('dist/html_rewriter.js.orig')
+
     await fs.copy(`src`, `dist`, {
         filter(p) {
             // console.log(p)

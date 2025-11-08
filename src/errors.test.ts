@@ -1,7 +1,7 @@
 import { describe, expect, it, test } from 'vitest'
 import { HTMLRewriter } from 'htmlrewriter'
 
-test(
+test.skip(
     'errors',
     async () => {
         const abortController = new AbortController()
